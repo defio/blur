@@ -69,11 +69,12 @@ public class BlurEngine {
             } catch (Exception e) {
                 Log.e(TAG, "blur: ", e);
             }
-            if (statusListener != null)
-                statusListener.finish(totalTime);
-
             sum += totalTime;
             count++;
+
+            if (statusListener != null)
+                statusListener.finish(totalTime, sum / count);
+
             if (sum < 0) {
                 sum = 0;
                 count = 1;
@@ -119,6 +120,6 @@ public class BlurEngine {
     public enum Repeat {YES, NO}
 
     public interface StatusListener {
-        void finish(long milliseconds);
+        void finish(long milliseconds, long averageTime);
     }
 }

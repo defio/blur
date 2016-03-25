@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.ndefiorenze.blur.BlurEngine;
 
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
         ViewGroup blurView = (ViewGroup) findViewById(R.id.blur_view);
         final View blueBox = findViewById(R.id.blue_box);
         final View redBox = findViewById(R.id.red_box);
+        final TextView timeTextView = (TextView) findViewById(R.id.time_text_view);
 
         ImageView blurDestinationView = (ImageView) findViewById(R.id.blur_content);
 
@@ -33,7 +35,12 @@ public class MainActivity extends AppCompatActivity {
 
         final BlurEngine blurEngine = BlurEngine.getInstance(this);
         blurEngine.blur(blurView, blurDestinationView);
-
+        blurEngine.setStatusListener(new BlurEngine.StatusListener() {
+            @Override
+            public void finish(long milliseconds, long averageTime) {
+                timeTextView.setText("Blurred in "+String.format("%03d", milliseconds)+"ms with an average of "+String.format("%03d", averageTime)+"ms");
+            }
+        });
 
         Button blurButton = (Button) findViewById(R.id.start_blur_button);
         blurButton.setOnClickListener(new View.OnClickListener() {
